@@ -1,5 +1,7 @@
 Project: Vox Control
-This project is a voice-controlled AI agent application built using the LiveKit Agents framework. It combines a real-time voice interaction pipeline with a web-based frontend and a persistent backend API.
+
+This project is a voice-controlled AI agent for developer observability and receiving recommendations for updating flow of conversation. 
+It combines a real-time voice interaction pipeline with a web-based frontend and a persistent backend API.
 
 🏗 Architecture
 The system consists of three main components:
