@@ -1,56 +1,42 @@
-# LiveKit Agents "Hello World" (Python)
+Project: Vox Control Hack
+This project is a voice-controlled AI agent application built using the LiveKit Agents framework. It combines a real-time voice interaction pipeline with a web-based frontend and a persistent backend API.
 
-This is a tiny starter so you can experiment with the **LiveKit Agents** framework locally.
+🏗 Architecture
+The system consists of three main components:
+1. Voice Agent (agent.py)
+A Python-based agent that handles real-time voice conversations.
+Pipeline: STT (Speech-to-Text) $\rightarrow$ LLM (Language Model) $\rightarrow$ TTS (Text-to-Speech).
 
-## What it does
+Models:
+STT: Speechmatics
+LLM: OpenAI GPT-4.1-mini
+TTS: Cartesia Sonic
+VAD: Silero (Voice Activity Detection)
+Features:
+Custom conversation tasks (e.g., ExpectOptionsTask, AcknowledgeInfoTask) to ensure structured data collection and user understanding.
+Event emission to the frontend (e.g., option_collected).
+Noise cancellation optimized for different inputs (e.g., SIP/Telephony).
 
-- Starts an `AgentServer` from `agent.py`
-- Uses a standard **STT → LLM → TTS** voice pipeline (via LiveKit Inference models)
-- Supports the built-in CLI modes: `download-files`, `console`, `dev`, `start`
+3. Backend API (backend/)
+A FastAPI application that serves as the control plane.
+Database: MongoDB (for storing agent configurations and data).
+Endpoints:
+/agents: CRUD operations for agent data.
+/livekit/token: Generates access tokens for the frontend to connect to LiveKit rooms.
+Deployment: Dockerized with docker-compose.
 
-## Prereqs
+5. Frontend (frontend/)
+A modern web interface built with Vite, React, and Tailwind CSS.
+Connects to LiveKit rooms to facilitate user interaction with the voice agent.
+likely visualizes agent state and events.
 
-- Python **3.10+**
-- A **LiveKit Cloud** project (or a self-hosted LiveKit server) with:
-  - `LIVEKIT_URL`
-  - `LIVEKIT_API_KEY`
-  - `LIVEKIT_API_SECRET`
-
-## Setup
-
-1) Create `.env.local`
-
-Copy `env.local.example` to a new file named `.env.local` and fill in values.
-
-2) Install deps
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-3) Download model files (VAD, turn detector, noise cancellation)
-
-```bash
-python agent.py download-files
-```
-
-## Run it
-
-### Talk to it in your terminal (fastest)
-
-```bash
-python agent.py console
-```
-
-### Connect it to LiveKit (for the Agents Playground / external clients)
-
-```bash
-python agent.py dev
-```
-
-## Notes
-
-- If you want to use a single speech-to-speech **Realtime** model (like OpenAI Realtime), we can switch this to `openai.realtime.RealtimeModel(...)` and add `OPENAI_API_KEY`.
-
+🛠 Tech Stack
+Languages: Python 3.10+, TypeScript
+Frameworks: LiveKit Agents, FastAPI, React, Vite
+AI/ML: OpenAI, Speechmatics, Cartesia, Silero
+Database: MongoDB
+Infrastructure: Docker, Docker Compose
+🚀 Getting Started (Summary)
+Backend: Run via docker compose up or locally with uvicorn.
+Agent: Run python agent.py dev to connect to LiveKit.
+Frontend: Standard Vite setup (npm install && npm run dev).
