@@ -1,0 +1,33 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: payflows-mongo
+    environment:
+      MONGO_INITDB_DATABASE: payflows
+    ports:
+      - "27017:27017"
+    volumes:
+      - payflows_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"db.adminCommand('ping').ok\" | grep 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: payflows-api
+    environment:
+      ENVIRONMENT: local
+      MONGODB_URI: mongodb://mongo:27017
+      MONGODB_DB: payflows
+    ports:
+      - "8000:8000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  payflows_mongo_data:
